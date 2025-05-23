@@ -1,8 +1,6 @@
 package com.example.schedulemanagement2.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
@@ -11,6 +9,8 @@ import lombok.Getter;
 public class Schedule extends BaseEntity{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
     private String title;
     private String contents;

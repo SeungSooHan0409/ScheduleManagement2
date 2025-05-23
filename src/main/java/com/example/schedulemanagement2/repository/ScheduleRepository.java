@@ -2,6 +2,11 @@ package com.example.schedulemanagement2.repository;
 
 import com.example.schedulemanagement2.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public interface ScheduleRepository extends JpaRepository<Schedule, String> {
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
+    default Schedule bringOptionalValue (Long id) {
+        return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"id 값이 없습니다."));
+    }
 }

@@ -24,12 +24,21 @@ public class ScheduleService {
         return new ScheduleResponseDto(username, title, contents);
     }
 
-    // get 메서드
+    // get 메서드 - 목록조회
     public List<ScheduleResponseDto> getList() {
 
         return scheduleRepository.findAll().stream()
                 .map(ScheduleResponseDto::toDto)
                 .toList();
+
+    }
+
+    // get 메서드 - 단건조회
+    public ScheduleResponseDto getSchedule(Long id) {
+
+        Schedule schedule =  scheduleRepository.bringOptionalValue(id);
+
+        return new ScheduleResponseDto(schedule.getUsername(), schedule.getTitle(), schedule.getContents());
 
     }
 
