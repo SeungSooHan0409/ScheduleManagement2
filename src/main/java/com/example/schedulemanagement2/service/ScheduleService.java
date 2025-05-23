@@ -42,4 +42,38 @@ public class ScheduleService {
 
     }
 
+    // put 메서드
+    public ScheduleResponseDto put(Long id, String username, String title, String contents) {
+
+        Schedule schedule = scheduleRepository.bringOptionalValue(id);
+
+        schedule.setUsername(username);
+        schedule.setTitle(title);
+        schedule.setContents(contents);
+
+        scheduleRepository.save(schedule);
+
+        return new ScheduleResponseDto(username, title, contents);
+
+    }
+
+    // patch 메서드
+    public ScheduleResponseDto patch(Long id, String title) {
+
+        Schedule schedule = scheduleRepository.bringOptionalValue(id);
+
+        schedule.setTitle(title);
+
+        scheduleRepository.save(schedule);
+
+        return new ScheduleResponseDto(schedule.getUsername(), schedule.getTitle(), schedule.getContents());
+    }
+
+    // delete 메서드
+    public void delete(Long id) {
+
+        scheduleRepository.deleteById(id);
+
+    }
+
 }

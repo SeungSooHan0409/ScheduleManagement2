@@ -38,6 +38,7 @@ public class ScheduleController {
 
     }
 
+
     // 일정 단건 조회
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> getSchedule (@PathVariable Long id) {
@@ -46,4 +47,41 @@ public class ScheduleController {
 
     }
 
+    // 일정 전체 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> changeAll (
+            @PathVariable Long id,
+            @RequestBody ScheduleRequestDto requestDto
+    ) {
+
+        return new ResponseEntity<>(scheduleService.put(
+                id, requestDto.getUsername(),
+                requestDto.getTitle(),
+                requestDto.getContents()
+        ), HttpStatus.OK);
+
+    }
+
+
+    // 일정의 제목만 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<ScheduleResponseDto> changeTitle (
+            @PathVariable Long id,
+            @RequestBody ScheduleRequestDto requestDto
+    ) {
+
+        return new ResponseEntity<>(scheduleService.patch(id, requestDto.getTitle()),HttpStatus.OK);
+
+    }
+
+
+    // 일정 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSchedule (@PathVariable Long id) {
+
+        scheduleService.delete(id);
+
+        return new ResponseEntity<> (HttpStatus.OK);
+
+    }
 }
