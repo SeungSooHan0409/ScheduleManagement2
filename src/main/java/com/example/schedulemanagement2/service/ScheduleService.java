@@ -15,13 +15,13 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     // post 메서드
-    public ScheduleResponseDto post(String username, String title, String contents) {
+    public ScheduleResponseDto post(String title, String contents) {
 
-        Schedule schedule = new Schedule(username, title, contents);
+        Schedule schedule = new Schedule(title, contents);
 
         scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(username, title, contents);
+        return new ScheduleResponseDto(title, contents);
     }
 
     // get 메서드 - 목록조회
@@ -38,22 +38,21 @@ public class ScheduleService {
 
         Schedule schedule =  scheduleRepository.bringOptionalValue(id);
 
-        return new ScheduleResponseDto(schedule.getUsername(), schedule.getTitle(), schedule.getContents());
+        return new ScheduleResponseDto(schedule.getTitle(), schedule.getContents());
 
     }
 
     // put 메서드
-    public ScheduleResponseDto put(Long id, String username, String title, String contents) {
+    public ScheduleResponseDto put(Long id, String title, String contents) {
 
         Schedule schedule = scheduleRepository.bringOptionalValue(id);
 
-        schedule.setUsername(username);
         schedule.setTitle(title);
         schedule.setContents(contents);
 
         scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(username, title, contents);
+        return new ScheduleResponseDto(title, contents);
 
     }
 
@@ -66,7 +65,7 @@ public class ScheduleService {
 
         scheduleRepository.save(schedule);
 
-        return new ScheduleResponseDto(schedule.getUsername(), schedule.getTitle(), schedule.getContents());
+        return new ScheduleResponseDto(schedule.getTitle(), schedule.getContents());
     }
 
     // delete 메서드

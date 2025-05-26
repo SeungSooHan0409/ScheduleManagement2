@@ -22,7 +22,6 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> postSchedule(@RequestBody ScheduleRequestDto requestDto) {
 
         return new ResponseEntity<> (scheduleService.post(
-                requestDto.getUsername(),
                 requestDto.getTitle(),
                 requestDto.getContents()
         ), HttpStatus.CREATED);
@@ -55,7 +54,7 @@ public class ScheduleController {
     ) {
 
         return new ResponseEntity<>(scheduleService.put(
-                id, requestDto.getUsername(),
+                id,
                 requestDto.getTitle(),
                 requestDto.getContents()
         ), HttpStatus.OK);

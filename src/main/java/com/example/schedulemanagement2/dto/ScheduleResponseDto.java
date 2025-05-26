@@ -6,19 +6,16 @@ import lombok.Getter;
 @Getter
 public class ScheduleResponseDto {
 
-    private String username;
-    private String title;
-    private String contents;
+    private final String title;
+    private final String contents;
 
-    public ScheduleResponseDto(String username, String title, String contents) {
-        this.username = username;
+    public ScheduleResponseDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
 
     public static ScheduleResponseDto toDto(Schedule schedule) {
         return new ScheduleResponseDto(
-                schedule.getUsername(),
                 schedule.getTitle(),
                 schedule.getContents()
         );
