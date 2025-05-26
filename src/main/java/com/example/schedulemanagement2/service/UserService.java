@@ -15,13 +15,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     // post 메서드
-    public UserResponseDto post (String username, String email) {
+    public UserResponseDto post (String username, String email, String password) {
 
-        User user = new User(username, email);
+        User user = new User(username, email, password);
 
         userRepository.save(user);
 
-        return new UserResponseDto(username, email);
+        return new UserResponseDto(username, email, password);
     }
 
 
@@ -41,7 +41,7 @@ public class UserService {
 
         User user = userRepository.bringOptionValue(id);
 
-        return new UserResponseDto(user.getUsername(), user.getEmail());
+        return new UserResponseDto(user.getUsername(), user.getEmail(), user.getPassword());
 
     }
 
@@ -51,12 +51,12 @@ public class UserService {
 
         User user = userRepository.bringOptionValue(id);
 
-        user.setUsername(username);
-        user.setEmail(email);
+            user.setUsername(username);
+            user.setEmail(email);
 
-        userRepository.save(user);
+            userRepository.save(user);
 
-        return new UserResponseDto(user.getUsername(), user.getEmail());
+            return new UserResponseDto(user.getUsername(), user.getEmail(), user.getPassword());
 
     }
 
@@ -70,16 +70,32 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserResponseDto(user.getUsername(), user.getEmail());
+        return new UserResponseDto(user.getUsername(), user.getEmail(),user.getPassword());
 
     }
 
 
     // delete 메서드
-    public void delete(Long id) {
+    public UserResponseDto delete(Long id, String password) {
 
-        userRepository.deleteById(id);
+        User user = userRepository.bringOptionValue(id);
 
+        if(!password.equals(user.getPassword())) {
+            return new UserResponseDto(
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getPassword()
+            );
+        } else {
+
+            userRepository.deleteById(id);
+
+            return new UserResponseDto(
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getPassword()
+            );
+        }
     }
 
 }

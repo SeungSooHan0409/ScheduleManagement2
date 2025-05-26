@@ -21,9 +21,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponseDto> postUser (@RequestBody UserRequestDto dto) {
 
-        return new ResponseEntity<>( userService.post(
+        return new ResponseEntity<>(userService.post(
                 dto.getUsername(),
-                dto.getEmail()),
+                dto.getEmail(),
+                dto.getPassword()),
                 HttpStatus.CREATED
         );
 
@@ -55,10 +56,15 @@ public class UserController {
             @RequestBody UserRequestDto dto)
     {
 
-        return new ResponseEntity<>(
-                userService.put(id, dto.getUsername(), dto.getEmail()),
-                HttpStatus.OK
-        );
+        UserResponseDto responseDto = userService.put(
+                id, dto.getUsername(),
+                dto.getEmail());
+
+        if(!responseDto.getPassword().equals(dto.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>((responseDto), HttpStatus.OK);
 
     }
 
@@ -70,17 +76,28 @@ public class UserController {
             @RequestBody UserRequestDto dto
     ) {
 
-        return new ResponseEntity<>(
-                userService.patch(id, dto.getEmail()),
-                HttpStatus.OK);
+        UserResponseDto responseDto = userService.patch(id, dto.getEmail());
+
+        if(!responseDto.getPassword().equals(dto.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>((responseDto), HttpStatus.OK);
 
     }
 
     // 유저정보 단건삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> DeleteUserInfo(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDto> DeleteUserInfo(
+            @PathVariable Long id,
+            @RequestBody UserRequestDto dto
+    ) {
 
-        userService.delete(id);
+        UserResponseDto responseDto =  userService.delete(id, dto.getPassword());
+
+        if(!responseDto.getPassword().equals(dto.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
 
