@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +97,17 @@ public class UserService {
                     user.getPassword()
             );
         }
+    }
+
+
+    // 이메일로 유저정보 조회후 세션생성
+    public User bringUser(String email) {
+
+        Optional<User> byEmail = userRepository.findByEmail(email);
+
+        // 조회된 유저정보 없으면 예외발생
+        return byEmail.orElseThrow(() -> new RuntimeException("이메일이 존재하지 않습니다."));
+
     }
 
 }
